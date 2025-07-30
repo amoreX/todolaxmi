@@ -1,22 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Todo } from "../types";
+import { Note } from "../types";
 
-const STORAGE_KEY = "@todo_items";
+const STORAGE_KEY = "notes";
 
-export const storeTodos = async (todos: Todo[]): Promise<void> => {
+export const storeNotes = async (notes: Note[]): Promise<void> => {
   try {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  } catch (error) {
-    console.error("Error saving todos", error);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  } catch (e) {
+    console.error("Error storing notes", e);
   }
 };
 
-export const retrieveTodos = async (): Promise<Todo[]> => {
+export const retrieveNotes = async (): Promise<Note[] | null> => {
   try {
-    const storedTodos = await AsyncStorage.getItem(STORAGE_KEY);
-    return storedTodos !== null ? JSON.parse(storedTodos) : [];
-  } catch (error) {
-    console.error("Error loading todos", error);
-    return [];
+    const notes = await AsyncStorage.getItem(STORAGE_KEY);
+    return notes ? JSON.parse(notes) : null;
+  } catch (e) {
+    console.error("Error retrieving notes", e);
+    return null;
   }
 };
